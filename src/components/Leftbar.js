@@ -5,6 +5,7 @@ export default function Leftbar() {
   const activeFilters = ["Reconquista", "Alquiler"]
   return (
     <Box
+      padding="20px"
       bgcolor="red"
       flex={2}
       display={{xs:"none", md:"block"}}

@@ -1,6 +1,8 @@
-import { Grid } from "@mui/material";
+import TuneIcon from "@mui/icons-material/Tune";
+import { Fab, Grid } from "@mui/material";
 import { Box } from "@mui/system";
 import FieldCard from "./FieldCard";
+import FiltersDialog from "./FiltersDialog";
 
 export default function Main() {
   return (
@@ -10,7 +12,7 @@ export default function Main() {
       spacing={{ xs: 2, md: 3 }}
       padding="16px"
     >
-      {[1,2,3,4,5,6,7].map((_, index) => (
+      {[1, 2, 3, 4, 5, 6, 7].map((_, index) => (
         <Grid
           xs={12}
           sm={6}
@@ -23,6 +25,7 @@ export default function Main() {
           <FieldCard />
         </Grid>
       ))}
+      <FiltersDialog/>
     </Grid>
   )
 }
