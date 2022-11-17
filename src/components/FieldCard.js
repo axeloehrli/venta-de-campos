@@ -28,13 +28,12 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
-export default function FieldCard() {
+export default function FieldCard({ campo }) {
   const [expanded, setExpanded] = React.useState(false);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
-
   return (
     <Card>
       <CardHeader
@@ -48,8 +47,8 @@ export default function FieldCard() {
             <MoreVertIcon />
           </IconButton>
         }
-        title="Campo en venta Pergamino, Bs As."
-        subheader="September 14, 2016"
+        title={campo.titulo}
+        subheader={campo["provincia"]}
       />
       <CardMedia>
         <Image
@@ -59,9 +58,19 @@ export default function FieldCard() {
           priority
         />
       </CardMedia>
-      <CardContent style={{ padding: " 20px 0 0 16px" }}>
+      <CardContent
+        style={{
+           padding: " 20px 0 0 16px",
+           display:"flex",
+           justifyContent:"space-between",
+           alignItems:"center"
+          }}
+      >
         <Typography variant="h5" color="text.primary" fontWeight="bold">
-          AR$ 1000 / ha
+          AR$ {campo["precio_por_hectarea"]} / ha
+        </Typography>
+        <Typography variant="caption" color="text.primary" fontWeight="bold" paddingRight="12px">
+          {campo["tipo"]}
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
@@ -83,8 +92,7 @@ export default function FieldCard() {
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
           <Typography paragraph>
-            Excelente fracción agrícola, suelos I, acceso por ruta y camino real, 2 pequeños montes, muy bien de alambres.
-            Luz eléctrica en la tranquera.
+            {campo["descripcion"]}
           </Typography>
         </CardContent>
       </Collapse>

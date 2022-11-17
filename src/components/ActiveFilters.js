@@ -11,7 +11,7 @@ export const removeQueryParam = (router, param) => {
     router.replace(
         { pathname, query: params.toString() },
         undefined,
-        { shallow: true }
+        { shallow: false }
     );
 };
 
@@ -28,30 +28,53 @@ export default function ActiveFilters() {
             gap="10px"
         >
             {activeFilters.map((filter) => {
-                if (filter.name == "hectareas_min") {
-                    let string = `< ${filter.value} ha`
-                    return <Chip
-                        key={filter.name}
-                        label={string}
-                        color="primary"
-                        onDelete={() => removeQueryParam(router, filter.name)}
-                    />
+                switch (filter.name) {
+                    case "page_id" || "page_size":
+                        return
+                    case "precio_por_hectarea_min": {
+                        let string = `Más de $${filter.value}/ha`
+                        return <Chip
+                            key={filter.name}
+                            label={string}
+                            color="primary"
+                            onDelete={() => removeQueryParam(router, filter.name)}
+                        />
+                    }
+                    case "precio_por_hectarea_max": {
+                        let string = `Menos de $${filter.value}/ha`
+                        return <Chip
+                            key={filter.name}
+                            label={string}
+                            color="primary"
+                            onDelete={() => removeQueryParam(router, filter.name)}
+                        />
+                    }
+                    case "hectareas_min": {
+                        let string = `Más de ${filter.value} ha`
+                        return <Chip
+                            key={filter.name}
+                            label={string}
+                            color="primary"
+                            onDelete={() => removeQueryParam(router, filter.name)}
+                        />
+                    }
+                    case "hectareas_max": {
+                        let string = `Menos de ${filter.value} ha`
+                        return <Chip
+                            key={filter.name}
+                            label={string}
+                            color="primary"
+                            onDelete={() => removeQueryParam(router, filter.name)}
+                        />
+                    }
+                    default:
+                        return <Chip
+                            key={filter.name}
+                            label={filter.value}
+                            color="primary"
+                            onDelete={() => removeQueryParam(router, filter.name)}
+                        />
                 }
-                if (filter.name == "hectareas_max") {
-                    let string = `> ${filter.value} ha`
-                    return <Chip
-                        key={filter.name}
-                        label={string}
-                        color="primary"
-                        onDelete={() => removeQueryParam(router, filter.name)}
-                    />
-                }
-                return <Chip
-                    key={filter.name}
-                    label={filter.value}
-                    color="primary"
-                    onDelete={() => removeQueryParam(router, filter.name)}
-                />
             })}
         </Box>
     )

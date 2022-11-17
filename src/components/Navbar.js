@@ -4,6 +4,10 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { AppBar, Toolbar, Typography, InputBase, Badge, Avatar, Menu, MenuItem, Button, IconButton, Autocomplete, TextField } from "@mui/material";
 import { Box } from "@mui/system";
 import { useState } from "react";
+import Provincias from "../Provincias"
+import { useRouter } from "next/router";
+import Link from "next/link";
+import Ingresar from "../../pages/ingresar";
 
 const StyledToolbar = styled(Toolbar)({
   display: "flex",
@@ -19,12 +23,10 @@ const Search = styled("div")(({ theme }) => ({
 const Icons = styled(Box)(({ theme }) => ({
   marginLeft: "auto",
   borderRadius: theme.shape.borderRadius,
-  display: "none",
+  display: "flex",
   alignItems: "center",
   gap: "20px",
-  [theme.breakpoints.up("md")]: {
-    display: "flex"
-  }
+
 }))
 
 const NotLoggedMenu = styled(Box)(({ theme }) => ({
@@ -51,17 +53,42 @@ const UserBox = styled(Box)(({ theme }) => ({
 
 
 export default function Navbar() {
-  const [menuOpen, setMenuOpen] = useState(false)
+  const router = useRouter()
+  const verifyToken = async () => {
+    try {
+      const verifyTokenUrl = "http://localhost:8000/verify"
+      const token = localStorage.getItem("camposToken")
+      const req = await fetch(verifyTokenUrl, {
+        headers: {
+          'Content-type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      })
+
+      if (!req.ok) {
+        router.push("/ingresar")
+        const res = await req.json()
+        console.log(res);
+        return
+      }
+      router.push("/publicar")
+
+    } catch (error) {
+      console.log(error);
+    }
+  }
   return (
     <AppBar position="sticky" color="background">
       <StyledToolbar>
         <Typography
           variant="h6"
+          component="h1"
           sx={{
+            fontWeight: "bold",
             display: { xs: "none", sm: "block" }
           }}
         >
-          Campos
+          Venta de Campos
         </Typography>
         <PublicIcon
           sx={{
@@ -69,30 +96,34 @@ export default function Navbar() {
           }}
         />
         <Search>
-          {/* <InputBase
-            placeholder="Search"
-          /> */}
           <Autocomplete
             size="small"
             disablePortal
             id="combo-box-demo"
-            options={campos}
-            renderInput={(params) => <TextField {...params} label="Buscar" />}
+            options={Provincias}
+            renderInput={(params) => <TextField {...params} label="Provincia" />}
+            value={router.query.provincia || null}
+            onChange={(_, value) => {
+              if (value == null) {
+                const { provincia, ...routerQuery } = router.query;
+                router.replace({
+                  query: { ...routerQuery },
+                });
+                return
+              }
+              router.push("?provincia=" + value)
+            }}
           />
         </Search>
         <Icons>
           <Button
-            href="#login"
             color="primary"
-            variant="outlined"
-          >
-            Ingresar
-          </Button>
-          <Button
             variant="contained"
-            color="primary"
+            onClick={() => {
+              verifyToken()
+            }}
           >
-            Registrarme
+            Publicar
           </Button>
         </Icons>
         {/* <UserBox
@@ -110,7 +141,7 @@ export default function Navbar() {
             John
           </Typography>
         </UserBox> */}
-        <NotLoggedMenu onClick={() => setMenuOpen(true)}>
+        {/*         <NotLoggedMenu onClick={() => setMenuOpen(true)}>
           <IconButton aria-label="menu" color="primary">
             <MenuIcon />
           </IconButton>
@@ -129,17 +160,10 @@ export default function Navbar() {
         >
           <MenuItem onClick={() => setMenuOpen(false)}>Ingresar</MenuItem>
           <MenuItem onClick={() => setMenuOpen(false)}>Registrarme</MenuItem>
-        </Menu>
+        </Menu> */}
       </StyledToolbar>
 
     </AppBar>
   )
 }
 
-const campos = [
-  { label: 'Reconquista, Santa Fe', year: 1994 },
-  { label: 'Paraná, Entre Ríos', year: 1972 },
-  { label: 'Rawson, Chubut', year: 1974 },
-  { label: 'Caballito, Buenos Aires', year: 2008 },
-  { label: 'Santiago del Estero', year: 1957 },
-];

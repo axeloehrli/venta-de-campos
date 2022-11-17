@@ -8,8 +8,8 @@ import { useRouter } from 'next/router';
 
 export const FiltersContext = React.createContext()
 
-export default function Index() {
-
+export default function Index({ campos }) {
+  console.log(campos.count);
   const router = useRouter()
   let queryParams = Object.entries(router.query)
   let filtersArray = queryParams.map(([filterName, filterValue]) => {
@@ -19,12 +19,12 @@ export default function Index() {
     <>
       <FiltersContext.Provider value={filtersArray}>
         <Navbar />
-        <Stack
-          direction="row"
+        <Box
+          display="inline"
         >
           <Leftbar />
-          <Main/>
-        </Stack>
+          <Main campos={campos} />
+        </Box>
       </FiltersContext.Provider>
     </>
 
@@ -32,11 +32,39 @@ export default function Index() {
 }
 
 export const getServerSideProps = async (context) => {
+  const queryParams = context.resolvedUrl.replace("/", "")
+  let limitAndOffsetQueries
+  console.log("RES: ", context.query);
+  if (context.query["page_id"] == undefined) {
+    limitAndOffsetQueries = "page_size=9&page_id=1"
+  } else {
+    limitAndOffsetQueries = `page_size=9&page_id=${context.query["page_id"]}`
+  }
+
+  let camposUrl
+  let countUrl
   try {
-    const queryParams = context.resolvedUrl.replace("/", "")
-    const req = fetch("http://localhost:9000" + queryParams)
+    if (!queryParams) {
+      camposUrl = "http://localhost:8000/campos?" + limitAndOffsetQueries
+    } else {
+      camposUrl = "http://localhost:8000/filtered-campos" + queryParams + "&" + limitAndOffsetQueries
+    }
+    const camposReq = await fetch(camposUrl)
+    const camposRes = await camposReq.json()
+
+    if (!queryParams) {
+      countUrl = "http://localhost:8000/filtered-campos-count"
+    } else {
+      countUrl = "http://localhost:8000/filtered-campos-count" + queryParams
+      console.log(countUrl);
+    }
+    const countReq = await fetch(countUrl)
+    const countRes = await countReq.json()
+
+    const campos = { list: camposRes, count: countRes }
+
     return {
-      props: {  }
+      props: { campos }
     }
   } catch (error) {
     console.log(error);

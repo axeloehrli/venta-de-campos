@@ -1,20 +1,26 @@
 import { Box } from "@mui/system";
-import {Typography} from "@mui/material"
+import { Typography } from "@mui/material"
+import ActiveFilters from "./ActiveFilters";
+import FiltersAccordion from "./Accordion";
 
 export default function Leftbar() {
-  const activeFilters = ["Reconquista", "Alquiler"]
   return (
     <Box
       padding="20px"
-      bgcolor="red"
       flex={2}
-      display={{xs:"none", md:"block"}}
+      display={{ xs: "none", md: "block" }}
       maxWidth="300px"
-    >
+      position="sticky"
+      top="0"
+      maxHeight="100vh"
+      overflow="scroll"
+      sx={{float:"left"}}
+      >
       <Typography
         variant="h5"
       >
-        Campos
+        <ActiveFilters />
+        <FiltersAccordion />
       </Typography>
     </Box>
   )

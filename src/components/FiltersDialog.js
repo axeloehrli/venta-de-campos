@@ -13,7 +13,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import TuneIcon from "@mui/icons-material/Tune";
 import Slide from '@mui/material/Slide';
 import { Accordion, Box, Fab } from '@mui/material';
-import SimpleAccordion from './Accordion';
+import FiltersAccordion from './Accordion';
 import ActiveFilters from './ActiveFilters';
 import { FiltersContext } from '../../pages';
 
@@ -73,7 +73,7 @@ export default function FiltersDialog() {
           </Toolbar>
         </AppBar>
         <ActiveFilters />
-        <SimpleAccordion />
+        <FiltersAccordion />
       </Dialog>
     </div>
   );
