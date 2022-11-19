@@ -1,8 +1,10 @@
-import TuneIcon from "@mui/icons-material/Tune";
-import { Fab, Grid, Pagination, Typography } from "@mui/material";
-import { Box, Container, Stack } from "@mui/system";
+import Grid from "@mui/material/Grid"
+import Typography from "@mui/material/Typography"
+import Pagination from "@mui/material/Pagination"
+import Box from "@mui/system/Box"
+import Container from "@mui/system/Container"
 import { useRouter } from "next/router";
-import { useState } from "react";
+
 import FieldCard from "./FieldCard";
 import FiltersDialog from "./FiltersDialog";
 

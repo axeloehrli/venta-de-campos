@@ -1,13 +1,15 @@
 import styled from "@emotion/styled";
 import PublicIcon from '@mui/icons-material/Public';
-import MenuIcon from '@mui/icons-material/Menu';
-import { AppBar, Toolbar, Typography, InputBase, Badge, Avatar, Menu, MenuItem, Button, IconButton, Autocomplete, TextField } from "@mui/material";
-import { Box } from "@mui/system";
-import { useState } from "react";
+
+import AppBar from "@mui/material/AppBar"
+import Toolbar from "@mui/material/Toolbar"
+import Typography from "@mui/material/Typography"
+import Button from "@mui/material/Button"
+import Autocomplete from "@mui/material/Autocomplete"
+import TextField from "@mui/material/TextField"
+import Box from "@mui/system/Box"
 import Provincias from "../Provincias"
 import { useRouter } from "next/router";
-import Link from "next/link";
-import Ingresar from "../../pages/ingresar";
 
 const StyledToolbar = styled(Toolbar)({
   display: "flex",

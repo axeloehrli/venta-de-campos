@@ -5,9 +5,15 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Provincias from '../Provincias'
-import { Autocomplete, Button, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, TextField } from '@mui/material';
+import Autocomplete from "@mui/material/Autocomplete"
+import Button from "@mui/material/Button"
+import FormControl from "@mui/material/FormControl"
+import FormControlLabel from "@mui/material/FormControlLabel"
+import Radio from "@mui/material/Radio"
+import RadioGroup from "@mui/material/RadioGroup"
+import TextField from "@mui/material/TextField"
 import { useRouter } from 'next/router';
-import { Box } from '@mui/system';
+import Box from '@mui/system/Box';
 
 export default function FiltersAccordion() {
     const router = useRouter()

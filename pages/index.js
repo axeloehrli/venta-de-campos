@@ -1,8 +1,7 @@
 import * as React from 'react';
-import { Box } from '@mui/material';
+import Box from "@mui/material/Box"
 import Leftbar from '../src/components/Leftbar';
 import Main from '../src/components/Main';
-import { Stack } from '@mui/system';
 import Navbar from '../src/components/Navbar';
 import { useRouter } from 'next/router';
 

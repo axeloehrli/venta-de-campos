@@ -1,5 +1,5 @@
-import { Chip } from "@mui/material";
-import { Box } from "@mui/system";
+import Box from "@mui/system/Box"
+import Chip from "@mui/material/Chip"
 import { useRouter } from "next/router";
 import { useContext } from "react";
 import { FiltersContext } from "../../pages";

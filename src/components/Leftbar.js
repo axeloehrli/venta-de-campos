@@ -1,5 +1,5 @@
-import { Box } from "@mui/system";
-import { Typography } from "@mui/material"
+import Box from "@mui/system/Box";
+import Typography from "@mui/material/Typography"
 import ActiveFilters from "./ActiveFilters";
 import FiltersAccordion from "./Accordion";
 
@@ -14,8 +14,8 @@ export default function Leftbar() {
       top="0"
       maxHeight="100vh"
       overflow="scroll"
-      sx={{float:"left"}}
-      >
+      sx={{ float: "left" }}
+    >
       <Typography
         variant="h5"
       >
