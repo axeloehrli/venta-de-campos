@@ -8,6 +8,7 @@ export const removeQueryParam = (router, param) => {
     const { pathname, query } = router;
     const params = new URLSearchParams(query);
     params.delete(param);
+    params.delete("page_id")
     router.replace(
         { pathname, query: params.toString() },
         undefined,

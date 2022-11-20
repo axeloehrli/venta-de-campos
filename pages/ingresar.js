@@ -20,7 +20,7 @@ function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
+      <Link color="inherit" href="/">
         Venta De Campos
       </Link>{' '}
       {new Date().getFullYear()}
@@ -35,9 +35,10 @@ export default function Ingresar() {
   const router = useRouter()
   const handleSubmit = async event => {
     event.preventDefault();
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL
     try {
       const data = new FormData(event.currentTarget);
-      const url = "http://localhost:8000/usuarios/login"
+      const url = apiUrl + "/usuarios/login"
       const req = await fetch(url, {
         method: "POST",
         body: JSON.stringify(

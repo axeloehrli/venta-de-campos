@@ -36,8 +36,9 @@ export default function Ingresar() {
   const handleSubmit = async event => {
     event.preventDefault();
     try {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL
       const data = new FormData(event.currentTarget);
-      const url = "http://localhost:8000/usuarios"
+      const url = apiUrl + "/usuarios"
       const req = await fetch(url, {
         method: "POST",
         body: JSON.stringify(

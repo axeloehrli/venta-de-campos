@@ -31,6 +31,8 @@ export default function Index({ campos }) {
 }
 
 export const getServerSideProps = async (context) => {
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL
+  console.log("API:", apiUrl)
   const queryParams = context.resolvedUrl.replace("/", "")
   let limitAndOffsetQueries
   console.log("RES: ", context.query);
@@ -44,24 +46,23 @@ export const getServerSideProps = async (context) => {
   let countUrl
   try {
     if (!queryParams) {
-      camposUrl = "http://localhost:8000/campos?" + limitAndOffsetQueries
+      camposUrl = apiUrl + "/campos?" + limitAndOffsetQueries
+
     } else {
-      camposUrl = "http://localhost:8000/filtered-campos" + queryParams + "&" + limitAndOffsetQueries
+      camposUrl = apiUrl + "/filtered-campos" + queryParams + "&" + limitAndOffsetQueries
     }
     const camposReq = await fetch(camposUrl)
     const camposRes = await camposReq.json()
 
     if (!queryParams) {
-      countUrl = "http://localhost:8000/filtered-campos-count"
+      countUrl = apiUrl + "/filtered-campos-count"
     } else {
-      countUrl = "http://localhost:8000/filtered-campos-count" + queryParams
-      console.log(countUrl);
+      countUrl = apiUrl + "/filtered-campos-count" + queryParams
     }
     const countReq = await fetch(countUrl)
     const countRes = await countReq.json()
 
     const campos = { list: camposRes, count: countRes }
-
     return {
       props: { campos }
     }

@@ -41,6 +41,7 @@ export default function FiltersAccordion() {
                         value={router.query.provincia || null}
                         onChange={(_, newValue) => {
                             if (!newValue) return
+                            delete router.query["page_id"]
                             router.query.provincia = newValue
                             router.push(router)
                         }}
@@ -63,6 +64,7 @@ export default function FiltersAccordion() {
                             name="controlled-radio-buttons-group"
                             value={router.query.tipo || null}
                             onChange={(_, newValue) => {
+                                delete router.query["page_id"]
                                 router.query.tipo = newValue
                                 router.push(router)
                             }}
@@ -123,6 +125,7 @@ export default function FiltersAccordion() {
                             if (precioPorHectareaMax != null) {
                                 router.query["precio_por_hectarea_max"] = precioPorHectareaMax
                             }
+                            delete router.query["page_id"]
                             router.push(router)
                         }}
                     >
@@ -165,6 +168,7 @@ export default function FiltersAccordion() {
                             }}
                             defaultValue={router.query["hectareas_max"] || null}
                             onChange={event => {
+
                                 setHectareasMax(event.target.value)
                             }}
                         />
@@ -179,6 +183,7 @@ export default function FiltersAccordion() {
                             if (hectareasMax != null) {
                                 router.query["hectareas_max"] = hectareasMax
                             }
+                            delete router.query["page_id"]
                             router.push(router)
                         }}
                     >

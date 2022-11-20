@@ -9,13 +9,17 @@ import MenuItem from "@mui/material/MenuItem"
 import Provincias from "../src/Provincias"
 import { useRouter } from "next/router";
 
+
+
 export default function CrearCampo() {
+
   const router = useRouter()
   const handleSubmit = async e => {
     e.preventDefault()
+    const apiUrl = process.env
     const userID = parseInt(localStorage.getItem("userID"))
     const data = new FormData(e.currentTarget);
-    const url = "http://localhost:8000/campos"
+    const url = apiUrl + "/campos"
     const token = localStorage.getItem("camposToken")
     const req = await fetch(url, {
       method: "POST",
@@ -47,11 +51,27 @@ export default function CrearCampo() {
   }
 
   useEffect(() => {
-    try {
-      verifyToken()
-    } catch (error) {
+    const verifyToken = async () => {
+      try {
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL
+        const verifyTokenUrl = apiUrl + "/verify"
+        const token = localStorage.getItem("camposToken")
+        const req = await fetch(verifyTokenUrl, {
+          headers: {
+            'Content-type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          }
+        })
 
+        if (!req.ok) {
+          router.push("/ingresar")
+        }
+      } catch (error) {
+        console.log(error);
+      }
     }
+    verifyToken()
+
   }, [])
   return (
     <>
@@ -158,18 +178,4 @@ export default function CrearCampo() {
       </Container >
     </>
   )
-}
-
-export const getServerSideProps = async (context) => {
-  try {
-
-    return {
-      props: {}
-    }
-  } catch (error) {
-    console.log(error);
-    return {
-      props: { error: true }
-    }
-  }
 }

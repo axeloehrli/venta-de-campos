@@ -55,30 +55,9 @@ const UserBox = styled(Box)(({ theme }) => ({
 
 
 export default function Navbar() {
+
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL
   const router = useRouter()
-  const verifyToken = async () => {
-    try {
-      const verifyTokenUrl = "http://localhost:8000/verify"
-      const token = localStorage.getItem("camposToken")
-      const req = await fetch(verifyTokenUrl, {
-        headers: {
-          'Content-type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        }
-      })
-
-      if (!req.ok) {
-        router.push("/ingresar")
-        const res = await req.json()
-        console.log(res);
-        return
-      }
-      router.push("/publicar")
-
-    } catch (error) {
-      console.log(error);
-    }
-  }
   return (
     <AppBar position="sticky" color="background">
       <StyledToolbar>
@@ -122,7 +101,7 @@ export default function Navbar() {
             color="primary"
             variant="contained"
             onClick={() => {
-              verifyToken()
+              router.push("/publicar")
             }}
           >
             Publicar
