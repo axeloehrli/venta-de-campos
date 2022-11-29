@@ -17,17 +17,9 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="right" ref={ref} {...props} />;
 });
 
-export default function FiltersDialog() {
+export default function FiltersDialog({open, handleClose}) {
 
-  const [open, setOpen] = React.useState(false);
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
   const activeFilters = React.useContext(FiltersContext)
   React.useEffect(() => {
     handleClose()
@@ -35,18 +27,6 @@ export default function FiltersDialog() {
 
   return (
     <div>
-      <Box
-        display={{ xs: "block", md: "none" }}
-        onClick={handleClickOpen}
-      >
-        <Fab
-          color="primary"
-          aria-label="add"
-          sx={{ position: "fixed", bottom: "20px", right: "20px" }}
-        >
-          <TuneIcon />
-        </Fab>
-      </Box>
       <Dialog
         fullScreen
         open={open}

@@ -9,7 +9,7 @@ export default function Leftbar() {
       padding="20px"
       flex={2}
       display={{ xs: "none", md: "block" }}
-      maxWidth="300px"
+      width="300px"
       position="sticky"
       top="0"
       maxHeight="100vh"

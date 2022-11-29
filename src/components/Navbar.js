@@ -10,6 +10,12 @@ import TextField from "@mui/material/TextField"
 import Box from "@mui/system/Box"
 import Provincias from "../Provincias"
 import { useRouter } from "next/router";
+import Divider from "@mui/material/Divider";
+import FiltersDialog from "./FiltersDialog";
+import { useState } from "react";
+import { ButtonBase } from "@mui/material";
+import FilterIcon from '@mui/icons-material/Tune';
+import SortIcon from '@mui/icons-material/Sort';
 
 const StyledToolbar = styled(Toolbar)({
   display: "flex",
@@ -54,97 +60,97 @@ const UserBox = styled(Box)(({ theme }) => ({
 }))
 
 
-export default function Navbar() {
-
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL
+export default function Navbar({ showFilterAndOrder }) {
+  const [openFiltersDialog, setopenFiltersDialog] = useState(false)
+  const handleFiltersDialogOpen = () => {
+    setopenFiltersDialog(true)
+  }
+  const handleFiltersDialogClose = () => {
+    setopenFiltersDialog(false)
+  }
   const router = useRouter()
   return (
-    <AppBar position="sticky" color="background">
-      <StyledToolbar>
-        <Typography
-          variant="h6"
-          component="h1"
-          sx={{
-            fontWeight: "bold",
-            display: { xs: "none", sm: "block" }
-          }}
-        >
-          Venta de Campos
-        </Typography>
-        <PublicIcon
-          sx={{
-            display: { xs: "block", sm: "none" }
-          }}
-        />
-        <Search>
-          <Autocomplete
-            size="small"
-            disablePortal
-            id="combo-box-demo"
-            options={Provincias}
-            renderInput={(params) => <TextField {...params} label="Provincia" />}
-            value={router.query.provincia || null}
-            onChange={(_, value) => {
-              if (value == null) {
-                const { provincia, ...routerQuery } = router.query;
-                router.replace({
-                  query: { ...routerQuery },
-                });
-                return
-              }
-              router.push("?provincia=" + value)
-            }}
-          />
-        </Search>
-        <Icons>
-          <Button
-            color="primary"
-            variant="contained"
-            onClick={() => {
-              router.push("/publicar")
-            }}
-          >
-            Publicar
-          </Button>
-        </Icons>
-        {/* <UserBox
-        >
-          <Avatar
-            sx={{
-              width: 30,
-              height: 30
-            }}
-            onClick={() => setMenuOpen(true)}
-          />
+    <>
+      <AppBar position="sticky" color="background">
+        <StyledToolbar>
           <Typography
-            variant="span"
+            variant="h6"
+            component="h1"
+            sx={{
+              fontWeight: "bold",
+              display: { xs: "none", sm: "block" }
+            }}
           >
-            John
+            Venta de Campos
           </Typography>
-        </UserBox> */}
-        {/*         <NotLoggedMenu onClick={() => setMenuOpen(true)}>
-          <IconButton aria-label="menu" color="primary">
-            <MenuIcon />
-          </IconButton>
-        </NotLoggedMenu>
-        <Menu
-          open={menuOpen}
-          onClose={() => setMenuOpen(false)}
-          anchorOrigin={{
-            vertical: 'top',
-            horizontal: 'right',
-          }}
-          transformOrigin={{
-            vertical: 'top',
-            horizontal: 'left',
-          }}
-        >
-          <MenuItem onClick={() => setMenuOpen(false)}>Ingresar</MenuItem>
-          <MenuItem onClick={() => setMenuOpen(false)}>Registrarme</MenuItem>
-        </Menu> */}
-      </StyledToolbar>
-
-    </AppBar>
+          <PublicIcon
+            sx={{
+              display: { xs: "block", sm: "none" }
+            }}
+          />
+          <Search>
+            <Autocomplete
+              size="small"
+              disablePortal
+              id="combo-box-demo"
+              options={Provincias}
+              renderInput={(params) => <TextField {...params} label="Provincia" />}
+              value={router.query.provincia || null}
+              onChange={(_, value) => {
+                if (value == null) {
+                  const { provincia, ...routerQuery } = router.query;
+                  router.replace({
+                    query: { ...routerQuery },
+                  });
+                  return
+                }
+                router.push("?provincia=" + value)
+              }}
+            />
+          </Search>
+          <Icons>
+            <Button
+              color="primary"
+              variant="contained"
+              onClick={() => {
+                router.push("/publicar")
+              }}
+            >
+              Publicar
+            </Button>
+          </Icons>
+        </StyledToolbar>
+        {showFilterAndOrder &&
+          <Box
+            display={{ xs: "flex", md: "none" }}
+            bgcolor="#51a331"
+            color="white"
+          >
+            <Divider />
+            <Box display="flex" flex={1}>
+              <ButtonBase 
+              sx={{ flex: 1, padding: "6px" }} 
+              onClick={handleFiltersDialogOpen}
+              >
+                <FilterIcon sx={{fontSize:"18px"}}/>
+                <Typography fontWeight="bold" paddingLeft="10px">
+                  Filtrar
+                </Typography>
+              </ButtonBase>
+            </Box>
+            <Box display="flex" flex={1}>
+              <ButtonBase sx={{ flex: 1, padding: "6px" }} >
+                <SortIcon sx={{fontSize:"18px"}}/>
+                <Typography fontWeight="bold" paddingLeft="10px">
+                  Ordenar
+                </Typography>
+              </ButtonBase>
+            </Box>
+          </Box>
+        }
+      </AppBar>
+      <FiltersDialog open={openFiltersDialog} handleClose={handleFiltersDialogClose} />
+    </>
   )
 }
 

@@ -17,7 +17,7 @@ export default function Index({ campos }) {
   return (
     <>
       <FiltersContext.Provider value={filtersArray}>
-        <Navbar />
+        <Navbar showFilterAndOrder={true}/>
         <Box
           display="inline"
         >
@@ -32,10 +32,8 @@ export default function Index({ campos }) {
 
 export const getServerSideProps = async (context) => {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL
-  console.log("API:", apiUrl)
   const queryParams = context.resolvedUrl.replace("/", "")
   let limitAndOffsetQueries
-  console.log("RES: ", context.query);
   if (context.query["page_id"] == undefined) {
     limitAndOffsetQueries = "page_size=9&page_id=1"
   } else {

@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import Navbar from "../src/components/Navbar";
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
@@ -8,16 +7,15 @@ import InputAdornment from "@mui/material/InputAdornment"
 import MenuItem from "@mui/material/MenuItem"
 import Provincias from "../src/Provincias"
 import { useRouter } from "next/router";
-
-
+import Cookies from "js-cookie"
 
 export default function CrearCampo() {
 
   const router = useRouter()
   const handleSubmit = async e => {
     e.preventDefault()
-    const apiUrl = process.env
-    const userID = parseInt(localStorage.getItem("userID"))
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL
+    const userID = parseInt(Cookies.get("userID"))
     const data = new FormData(e.currentTarget);
     const url = apiUrl + "/campos"
     const token = localStorage.getItem("camposToken")
@@ -50,29 +48,6 @@ export default function CrearCampo() {
     }
   }
 
-  useEffect(() => {
-    const verifyToken = async () => {
-      try {
-        const apiUrl = process.env.NEXT_PUBLIC_API_URL
-        const verifyTokenUrl = apiUrl + "/verify"
-        const token = localStorage.getItem("camposToken")
-        const req = await fetch(verifyTokenUrl, {
-          headers: {
-            'Content-type': 'application/json',
-            'Authorization': `Bearer ${token}`
-          }
-        })
-
-        if (!req.ok) {
-          router.push("/ingresar")
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    verifyToken()
-
-  }, [])
   return (
     <>
 
@@ -178,4 +153,42 @@ export default function CrearCampo() {
       </Container >
     </>
   )
+}
+
+export const getServerSideProps = async (context) => {
+  try {
+    const cookies = context.req.cookies
+    const token = cookies.camposToken
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL
+    const reqUrl = apiUrl + "/verify"
+
+    if (!token) {
+      return {
+        redirect: {
+          destination: "/ingresar"
+        }
+      }
+    }
+
+    const req = await fetch(reqUrl, {
+      headers: {
+        'Content-type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+    })
+
+    if (!req.ok) {
+      return {
+        redirect: {
+          destination: "/ingresar"
+        }
+      }
+    }
+
+    return {
+      props: {}
+    }
+  } catch (error) {
+    console.log(error);
+  }
 }

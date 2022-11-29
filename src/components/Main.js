@@ -44,8 +44,6 @@ export default function Main({ campos }) {
             <FieldCard campo={campo} />
           </Grid>
         ))}
-        <FiltersDialog />
-
       </Grid>
       <Pagination
         page={parseInt(router.query["page_id"]) || 1}

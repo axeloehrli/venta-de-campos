@@ -12,7 +12,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { useRouter } from 'next/router';
-
+import Cookies from "js-cookie"
 const nombreUsuarioError = 'pq: duplicate key value violates unique constraint "usuarios_nombre_usuario_key"'
 const emailError = 'pq: duplicate key value violates unique constraint "usuarios_email_key"'
 
@@ -51,11 +51,9 @@ export default function Ingresar() {
       const res = await req.json()
       if (!req.ok) {
         setError(res.error)
-        console.log("THERE WAS AN ERROR: ", res);
       } else {
-        console.log(res);
-        localStorage.setItem("camposToken", res.access_token)
-        localStorage.setItem("userID", res.usuario.id)
+        Cookies.set("camposToken", res.access_token)
+        Cookies.set("userID", res.usuario.id)
         router.push("/")
       }
     } catch (error) {
@@ -79,7 +77,7 @@ export default function Ingresar() {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Sign in
+          Ingresar
         </Typography>
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
           <Box display="flex" gap="12px">
@@ -106,10 +104,7 @@ export default function Ingresar() {
             autoComplete="current-password"
             error={error.includes("Password") ? true : false}
           />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Recuérdame"
-          />
+
           <Button
             type="submit"
             fullWidth
