@@ -18,7 +18,8 @@ export default function CrearCampo() {
     const userID = parseInt(Cookies.get("userID"))
     const data = new FormData(e.currentTarget);
     const url = apiUrl + "/campos"
-    const token = localStorage.getItem("camposToken")
+    const token = Cookies.get("camposToken")
+    console.log(token)
     const req = await fetch(url, {
       method: "POST",
       headers: {
