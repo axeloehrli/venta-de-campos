@@ -8,8 +8,10 @@ import MenuItem from "@mui/material/MenuItem"
 import Provincias from "../src/Provincias"
 import { useRouter } from "next/router";
 import Cookies from "js-cookie"
+import { useState } from "react";
 
 export default function CrearCampo() {
+  const [error, setError] = useState("")
 
   const router = useRouter()
   const handleSubmit = async e => {
@@ -19,7 +21,6 @@ export default function CrearCampo() {
     const data = new FormData(e.currentTarget);
     const url = apiUrl + "/campos"
     const token = Cookies.get("camposToken")
-    console.log(token)
     const req = await fetch(url, {
       method: "POST",
       headers: {
@@ -38,20 +39,19 @@ export default function CrearCampo() {
       })
     })
     const res = await req.json()
-    console.log(res);
-
+    console.log(res)
     if (req.ok) {
       router.push("/")
+    } else {
+      setError(res.error)
     }
-
     if (req.status == 401) {
       router.push("/ingresar")
     }
   }
-
+  console.log(error);
   return (
     <>
-
       <Navbar />
       <Container>
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
@@ -65,6 +65,8 @@ export default function CrearCampo() {
               name="titulo"
               autoComplete="Título"
               autoFocus
+              error={error.includes("Titulo")}
+              helperText={error.includes("Titulo") && "Ingrese un título válido"}
             />
             <TextField
               required
@@ -74,6 +76,8 @@ export default function CrearCampo() {
               name="descripcion"
               multiline
               rows={4}
+              error={error.includes("Descripcion")}
+              helperText={error.includes("Descripcion") && "Ingrese una descripción valida"}
             />
             <TextField
               select
@@ -83,6 +87,8 @@ export default function CrearCampo() {
               label="Tipo"
               name="tipo"
               defaultValue="Ganadero"
+              error={error.includes("Tipo")}
+              helperText={error.includes("Tipo") && "Ingrese un tipo de campo válido"}
             >
               {["Ganadero", "Agricola", "Mixto"].map((option) => (
                 <MenuItem key={option} value={option}>
@@ -99,6 +105,8 @@ export default function CrearCampo() {
               label="Número de hectáreas"
               name="hectareas"
               autoFocus
+              error={error.includes("Hectareas")}
+              helperText={error.includes("Hectareas") && "Ingrese un número de hectareas válido"}
             />
             <TextField
               margin="normal"
@@ -112,6 +120,8 @@ export default function CrearCampo() {
                 startAdornment: <InputAdornment position="start">U$D</InputAdornment>,
               }}
               autoFocus
+              error={error.includes("PrecioPorHectarea")}
+              helperText={error.includes("PrecioPorHectarea") && "Ingrese un precio por hectarea válido"}
             />
             <TextField
               select
@@ -140,6 +150,8 @@ export default function CrearCampo() {
               name="ciudad"
               autoComplete="Ciudad"
               autoFocus
+              error={error.includes("Ciudad")}
+              helperText={error.includes("Ciudad") && "Ingrese una ciudad válida"}
             />
             <Button
               type="submit"
